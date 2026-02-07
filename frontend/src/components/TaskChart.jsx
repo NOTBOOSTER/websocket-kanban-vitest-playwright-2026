@@ -62,7 +62,7 @@ const TaskChart = ({ tasks }) => {
       <h3 className="text-gray-700 font-bold mb-4">Task Progress</h3>
       <div className="w-40 h-40 relative">
         <Doughnut data={doughnutData} options={{ maintainAspectRatio: false }} />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="flex items-center justify-center pointer-events-none">
             <div className="text-center">
                 <span className="text-xl font-bold text-gray-800">{completionRate}%</span>
                 <p className="text-[10px] text-gray-500">Done</p>
