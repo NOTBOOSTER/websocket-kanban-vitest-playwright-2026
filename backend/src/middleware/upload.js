@@ -19,9 +19,9 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  // Accept images only
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-    return cb(new Error("Only image files are allowed!"), false);
+  // Accept images and PDFs
+  if (!file.originalname.match(/\.(jpg|jpeg|png|gif|pdf)$/)) {
+    return cb(new Error("Only image and PDF files are allowed!"), false);
   }
   cb(null, true);
 };
