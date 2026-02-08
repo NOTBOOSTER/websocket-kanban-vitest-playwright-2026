@@ -1,5 +1,5 @@
-const taskService = require("../services/task.service");
-const asyncHandler = require("../utils/asyncHandler");
+import taskService from "../services/task.service.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
 const getTasks = asyncHandler(async (req, res) => {
   const tasks = await taskService.getAllTasks();
@@ -32,7 +32,7 @@ const deleteTask = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, message: "Task deleted" });
 });
 
-module.exports = {
+export {
   getTasks,
   createTask,
   updateTask,

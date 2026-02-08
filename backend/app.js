@@ -1,9 +1,14 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const requestLogger = require("./src/middleware/requestLogger");
-const errorHandler = require("./src/middleware/errorHandler");
-const taskRoutes = require("./src/routes/task.routes");
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import path from "path";
+import { fileURLToPath } from "url";
+import requestLogger from "./src/middleware/requestLogger.js";
+import errorHandler from "./src/middleware/errorHandler.js";
+import taskRoutes from "./src/routes/task.routes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -14,8 +19,6 @@ app.use(helmet({
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-const path = require("path");
 
 // Request Logger
 app.use(requestLogger);
@@ -29,4 +32,4 @@ app.use("/api/tasks", taskRoutes);
 // Global Error Handler
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

@@ -2,7 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import TaskCard from "./TaskCard";
 
-const Column = ({ title, tasks, onDropTask }) => {
+const Column = ({ title, tasks, onDropTask, onDeleteTask }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "TASK",
     drop: (item) => onDropTask(item.id, title),
@@ -44,7 +44,7 @@ const Column = ({ title, tasks, onDropTask }) => {
       </div>
       <div className="space-y-3 h-full overflow-y-auto pr-1 custom-scrollbar">
         {tasks.map((task) => (
-          <TaskCard key={task._id} task={task} />
+          <TaskCard key={task._id} task={task} onDelete={onDeleteTask} />
         ))}
       </div>
     </div>

@@ -5,11 +5,14 @@ import Column from "./Column";
 import TaskForm from "./TaskForm";
 import TaskFilter from "./TaskFilter";
 import TaskChart from "./TaskChart";
+import ConfirmationModal from "./ConfirmationModal";
 import { useTasks } from "../hooks/useTasks";
+import { taskApi } from "../services/api";
 
 const KanbanBoard = () => {
   const { tasks, loading, error, moveTask } = useTasks();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
   const [filters, setFilters] = useState({ priority: "", category: "" });
 
   if (loading) return <div className="text-center p-10">Loading...</div>;
@@ -22,6 +25,21 @@ const KanbanBoard = () => {
       (filters.category === "" || task.category === filters.category)
     );
   });
+
+  const handleDeleteTask = (task) => {
+    setTaskToDelete(task);
+  };
+
+  const confirmDelete = async () => {
+    if (taskToDelete) {
+      try {
+        await taskApi.delete(taskToDelete._id);
+        setTaskToDelete(null);
+      } catch (err) {
+        console.error("Failed to delete task", err);
+      }
+    }
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -58,6 +76,7 @@ const KanbanBoard = () => {
                     title={col}
                     tasks={filteredTasks.filter((t) => t.column === col)}
                     onDropTask={moveTask}
+                    onDeleteTask={handleDeleteTask}
                   />
                 ))}
               </div>
@@ -74,6 +93,14 @@ const KanbanBoard = () => {
           </div>
         </div>
         {isModalOpen && <TaskForm onClose={() => setIsModalOpen(false)} />}
+        
+        <ConfirmationModal 
+            isOpen={!!taskToDelete}
+            onClose={() => setTaskToDelete(null)}
+            onConfirm={confirmDelete}
+            title="Delete Task?"
+            message="Are you sure you want to delete this task? This action cannot be undone."
+        />
       </div>
     </DndProvider>
   );

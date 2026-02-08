@@ -1,39 +1,28 @@
-const Task = require("../models/task.model");
-const ApiError = require("../utils/ApiError");
+import Task from "../models/task.model.js";
 
 class TaskService {
-  async createTask(data) {
-    return await Task.create(data);
-  }
-
   async getAllTasks() {
     return await Task.find().sort({ createdAt: -1 });
   }
 
+  async createTask(data) {
+    return await Task.create(data);
+  }
+
   async updateTask(id, data) {
-    const task = await Task.findByIdAndUpdate(id, data, {
+    return await Task.findByIdAndUpdate(id, data, {
       new: true,
       runValidators: true,
     });
-    if (!task) throw new ApiError(404, "Task not found");
-    return task;
   }
 
   async deleteTask(id) {
-    const task = await Task.findByIdAndDelete(id);
-    if (!task) throw new ApiError(404, "Task not found");
-    return task;
+    return await Task.findByIdAndDelete(id);
   }
-
+  
   async moveTask(id, column) {
-    const task = await Task.findByIdAndUpdate(
-      id,
-      { column },
-      { new: true, runValidators: true }
-    );
-    if (!task) throw new ApiError(404, "Task not found");
-    return task;
+      return await Task.findByIdAndUpdate(id, { column }, { new: true });
   }
 }
 
-module.exports = new TaskService();
+export default new TaskService();

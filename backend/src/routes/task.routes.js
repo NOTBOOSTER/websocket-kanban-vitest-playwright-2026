@@ -1,16 +1,20 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   getTasks,
   createTask,
   updateTask,
   deleteTask,
-} = require("../controllers/task.controller");
+} from "../controllers/task.controller.js";
+import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
-const upload = require("../middleware/upload");
+router.route("/")
+    .get(getTasks)
+    .post(upload.single("attachment"), createTask);
 
-router.route("/").get(getTasks).post(upload.single("attachment"), createTask);
-router.route("/:id").put(updateTask).delete(deleteTask);
+router.route("/:id")
+    .put(updateTask)
+    .delete(deleteTask);
 
-module.exports = router;
+export default router;
