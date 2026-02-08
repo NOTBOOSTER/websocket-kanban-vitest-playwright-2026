@@ -50,8 +50,8 @@ const KanbanBoard = () => {
               </button>
             </div>
 
-            <div className="flex gap-6 overflow-x-auto overflow-y-hidden pb-4 flex-1">
-              <div className="flex gap-6 h-full min-w-max px-2">
+            <div className="flex flex-col md:flex-row gap-6 overflow-y-auto md:overflow-y-hidden md:overflow-x-auto pb-4 flex-1">
+              <div className="flex flex-col md:flex-row gap-6 h-full w-full md:w-auto md:min-w-max px-2">
                 {["To Do", "In Progress", "Done"].map((col) => (
                   <Column
                     key={col}

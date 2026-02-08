@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrag } from "react-dnd";
-
+import ConfirmationModal from "./ConfirmationModal";
 import { taskApi } from "../services/api";
 
 const TaskCard = ({ task }) => {
+  const [showConfirm, setShowConfirm] = useState(false);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "TASK",
     item: { id: task._id },
@@ -12,14 +13,17 @@ const TaskCard = ({ task }) => {
     }),
   }));
 
-  const handleDelete = async (e) => {
+  const handleDeleteClick = (e) => {
     e.stopPropagation();
-    if (window.confirm("Are you sure you want to delete this task?")) {
-        try {
-            await taskApi.delete(task._id);
-        } catch (err) {
-            console.error("Failed to delete task", err);
-        }
+    setShowConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+        await taskApi.delete(task._id);
+        setShowConfirm(false);
+    } catch (err) {
+        console.error("Failed to delete task", err);
     }
   };
 
@@ -33,30 +37,31 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <div
-      ref={drag}
-      className={`p-4 bg-white/90 shadow-sm rounded-xl border border-gray-100 cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 transform hover:-translate-y-1 group ${
-        isDragging ? "opacity-50 scale-95" : "opacity-100"
-      }`}
-    >
-      <div className="flex justify-between items-start mb-2">
-        <h4 className="font-semibold text-gray-800 text-base leading-tight flex-1">{task.title}</h4>
-        <button 
-            onClick={handleDelete}
-            className="text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 p-1"
-            title="Delete Task"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-        </button>
-      </div>
-      
-      {task.description && (
-        <p className="text-sm text-gray-500 mb-4 line-clamp-2 leading-relaxed">
-          {task.description}
-        </p>
-      )}
+    <>
+      <div
+        ref={drag}
+        className={`p-4 bg-white/90 shadow-sm rounded-xl border border-gray-100 cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200 transform hover:-translate-y-1 group ${
+          isDragging ? "opacity-50 scale-95" : "opacity-100"
+        }`}
+      >
+        <div className="flex justify-between items-start mb-2">
+          <h4 className="font-semibold text-gray-800 text-base leading-tight flex-1">{task.title}</h4>
+          <button 
+              onClick={handleDeleteClick}
+              className="text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 p-1"
+              title="Delete Task"
+          >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+          </button>
+        </div>
+        
+        {task.description && (
+          <p className="text-sm text-gray-500 mb-4 line-clamp-2 leading-relaxed">
+            {task.description}
+          </p>
+        )}
 
       {task.attachments && task.attachments.length > 0 && (
         <div className="mb-3">
@@ -87,17 +92,26 @@ const TaskCard = ({ task }) => {
         </div>
       )}
 
-      <div className="flex justify-between items-center pt-2 border-t border-gray-50">
-        <span
-          className={`text-xs px-2.5 py-0.5 rounded-full font-medium border ${getPriorityColor(task.priority)}`}
-        >
-          {task.priority}
-        </span>
-        <span className="text-xs font-medium text-gray-400 bg-gray-50 px-2 py-1 rounded border border-gray-100">
-          {task.category}
-        </span>
+        <div className="flex justify-between items-center pt-2 border-t border-gray-50">
+          <span
+            className={`text-xs px-2.5 py-0.5 rounded-full font-medium border ${getPriorityColor(task.priority)}`}
+          >
+            {task.priority}
+          </span>
+          <span className="text-xs font-medium text-gray-400 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+            {task.category}
+          </span>
+        </div>
       </div>
-    </div>
+
+      <ConfirmationModal 
+        isOpen={showConfirm}
+        onClose={() => setShowConfirm(false)}
+        onConfirm={confirmDelete}
+        title="Delete Task?"
+        message="Are you sure you want to delete this task? This action cannot be undone."
+      />
+    </>
   );
 };
 
