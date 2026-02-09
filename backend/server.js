@@ -34,11 +34,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("task:move", async (data) => {
-    // We can also persist move here if we want strict consistency,
-    // but typically we might just trust the update or do it via API.
-    // For this app, let's persist it to DB to be safe
+    
     await taskService.moveTask(data.id, data.column);
-    socket.broadcast.emit("task:move", data); // Broadcast to others
+    socket.broadcast.emit("task:move", data);
   });
 
   socket.on("disconnect", () => {
