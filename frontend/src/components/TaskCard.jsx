@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useDrag } from "react-dnd";
 
 const TaskCard = ({ task, onDelete }) => {

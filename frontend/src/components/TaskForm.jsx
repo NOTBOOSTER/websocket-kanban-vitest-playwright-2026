@@ -48,6 +48,7 @@ const TaskForm = ({ onClose }) => {
       onClose();
     } catch (err) {
       alert("Failed to create task");
+      console.error(err);
     } finally {
       setLoading(false);
     }
