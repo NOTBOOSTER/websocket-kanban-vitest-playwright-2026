@@ -21,7 +21,15 @@ const createTask = asyncHandler(async (req, res) => {
 });
 
 const updateTask = asyncHandler(async (req, res) => {
-  const task = await taskService.updateTask(req.params.id, req.body);
+  const taskData = req.body;
+  if (req.file) {
+    const protocol = req.protocol;
+    const host = req.get("host");
+    const fullUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
+    taskData.attachments = [fullUrl]; 
+  }
+
+  const task = await taskService.updateTask(req.params.id, taskData);
   req.app.get("io").emit("task:update", task);
   res.status(200).json({ success: true, data: task });
 });

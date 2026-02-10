@@ -15,7 +15,14 @@ export const taskApi = {
     }
     return api.post("/tasks", data);
   },
-  update: (id, data) => api.put(`/tasks/${id}`, data),
+  update: (id, data) => {
+    if (data instanceof FormData) {
+      return api.put(`/tasks/${id}`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    }
+    return api.put(`/tasks/${id}`, data);
+  },
   delete: (id) => api.delete(`/tasks/${id}`),
 };
 

@@ -32,9 +32,9 @@ export const useTasks = () => {
         prev.map((t) => (t._id === updatedTask._id ? updatedTask : t))
       );
     });
-    socketService.on("task:move", (movedTask) => {
+    socketService.on("task:move", ({ id, column }) => {
       setTasks((prev) =>
-        prev.map((t) => (t._id === movedTask._id ? movedTask : t))
+        prev.map((t) => (t._id === id ? { ...t, column } : t))
       );
     });
     socketService.on("task:delete", (deletedId) => {

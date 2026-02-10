@@ -15,7 +15,7 @@ router.route("/")
     .post(uploadLimiter, upload.single("attachment"), createTask);
 
 router.route("/:id")
-    .put(updateTask)
+    .put(uploadLimiter, upload.single("attachment"), updateTask)
     .delete(deleteTask);
 
 export default router;
