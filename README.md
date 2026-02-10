@@ -1,4 +1,31 @@
-# 📝 WebSocket-Powered Kanban Board - Candidate Guide
+# � Deployment & Submission Guide
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/NOTBOOSTER/websocket-kanban-vitest-playwright-2026.git
+   cd websocket-kanban-vitest-playwright-2026
+   ```
+
+2. **Backend Setup:**
+   ```bash
+   cd backend
+   npm install
+   # Create .env (PORT=5000, MONGO_URI=..., CORS_ORIGIN=http://your-frontend)
+   npm start
+   ```
+
+3. **Frontend Setup:**
+   ```bash
+   cd frontend
+   npm install
+   # Create .env (VITE_API_URL=http://your-backend/api, VITE_SOCKET_URL=http://your-backend)
+   npm run build
+   # Serve dist folder
+   ```
+
+---
+
+# �📝 WebSocket-Powered Kanban Board - Candidate Guide
 
 ## 📌 Project Overview
 
