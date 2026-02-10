@@ -32,7 +32,7 @@ const Column = ({ title, tasks, onDropTask, onDeleteTask }) => {
   return (
     <div
       ref={drop}
-      className={`flex-1 min-w-[300px] rounded-xl p-4 min-h-[500px] transition-all duration-300 border-t-4 shadow-sm backdrop-blur-sm ${
+      className={`flex-1 min-w-[300px] max-w-[380px] overflow-hidden rounded-xl p-4 min-h-[500px] transition-all duration-300 border-t-4 shadow-sm backdrop-blur-sm ${
         getColumnColor(title)
       } ${isOver ? "bg-white/80 ring-2 ring-indigo-400 ring-opacity-50" : ""}`}
     >

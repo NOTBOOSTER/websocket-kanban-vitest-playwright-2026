@@ -52,7 +52,7 @@ const TaskCard = ({ task, onDelete }) => {
       )}
 
       {task.attachments && task.attachments.length > 0 && (
-        <div className="mb-3">
+        <div className="mb-3 overflow-hidden rounded-lg">
           {task.attachments[0].endsWith(".pdf") ? (
             <a 
                 href={task.attachments[0]} 
@@ -70,7 +70,7 @@ const TaskCard = ({ task, onDelete }) => {
             <img 
                 src={task.attachments[0]} 
                 alt="Attachment" 
-                className="w-full h-32 object-cover rounded-lg border border-gray-100"
+                className="w-full max-h-40 object-cover rounded-lg border border-gray-100"
                 onError={(e) => {
                     e.target.onerror = null; 
                     e.target.src = "https://via.placeholder.com/300x200?text=Image+Not+Found";
