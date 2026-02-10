@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import requestLogger from "./src/middleware/requestLogger.js";
 import errorHandler from "./src/middleware/errorHandler.js";
+import { apiLimiter } from "./src/middleware/rateLimiter.js";
 import taskRoutes from "./src/routes/task.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 // Request Logger
 app.use(requestLogger);
 
-// Serve Uploads
+app.use("/api", apiLimiter);
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes

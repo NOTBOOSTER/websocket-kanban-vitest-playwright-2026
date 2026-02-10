@@ -6,12 +6,13 @@ import {
   deleteTask,
 } from "../controllers/task.controller.js";
 import upload from "../middleware/upload.js";
+import { uploadLimiter } from "../middleware/rateLimiter.js";
 
 const router = express.Router();
 
 router.route("/")
     .get(getTasks)
-    .post(upload.single("attachment"), createTask);
+    .post(uploadLimiter, upload.single("attachment"), createTask);
 
 router.route("/:id")
     .put(updateTask)
